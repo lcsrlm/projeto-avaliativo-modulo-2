@@ -21,8 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'date_birth',
+        'cpf',
+        'plan_id',
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *

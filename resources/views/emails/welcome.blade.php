@@ -5,7 +5,8 @@
 </head>
 <body>
     <p>Olá, {{ $user->name }}!</p>
-    <p>Bem-vindo ao nosso serviço. Você assinou o plano.</p>
-    <p>Limite de alunos</p>
+    <p>Bem-vindo ao nosso serviço. Você assinou o plano. {{ optional($user->plan)->description }}</p>
+    <p>Limite de alunos: {{ optional($user->plan)->limit }}</p>
+
 </body>
 </html>

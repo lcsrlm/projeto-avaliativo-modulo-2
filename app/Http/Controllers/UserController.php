@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\WelcomeEmail;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 
 
@@ -29,6 +31,8 @@ class UserController extends Controller
                 'password' => bcrypt($request->input('password')),
                 'plan_id' => $request->input('plan_id'),
             ]);
+
+            Mail::to($user->email, $user->name)->send(new WelcomeEmail($user));
             return $this->response('Usuário cadastrado com sucesso.', 201, $user);
         } catch (ValidationException $e) {
             return $this->error('Erro de validação.', 400, $e->errors());

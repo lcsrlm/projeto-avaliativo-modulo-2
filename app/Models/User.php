@@ -23,6 +23,10 @@ class User extends Authenticatable
          return $this->belongsTo(Plan::class);
      }
 
+     public function exercises()
+     {
+         return $this->hasMany(Exercise::class);
+     }
     protected $fillable = [
         'name',
         'email',

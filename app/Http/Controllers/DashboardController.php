@@ -12,7 +12,7 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         $registeredStudents = 0; //atualizar quando for criada a tabela de alunos
-        $registeredExercises = 0; //atualizar quando for criada a tabela de exercicios
+        $registeredExercises = $user->exercises()->count();
         $currentUserPlan = $user->plan->description;
         $remainingStudents = $user->plan->limit; //atualizar quando for criada a tabela de alunos
 

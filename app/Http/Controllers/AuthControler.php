@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +22,7 @@ class AuthControler extends Controller
                 return $this->error('Não autorizado. Credenciais inválidas', Response::HTTP_UNAUTHORIZED);
             }
 
-            $token = $request->user()->createToken('authToken');
+            $token = $request->user()->createToken('authToken', ['expires_in' => 1440]);
 
             return response()->json([
                 'message' => 'Autorizado',

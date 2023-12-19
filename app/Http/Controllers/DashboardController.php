@@ -17,10 +17,10 @@ class DashboardController extends Controller
         $remainingStudents = $user->plan->limit; //atualizar quando for criada a tabela de alunos
 
         $data = [
-            'Alunos cadastrados' => $registeredStudents,
-            'Exercicios cadastrados' => $registeredExercises,
-            'Plano' => $currentUserPlan,
-            'Alunos disponíveis' => $remainingStudents,
+            'registered_students' => $registeredStudents,
+            'registered_exercises' => $registeredExercises,
+            'current_user_plan' => $currentUserPlan,
+            'remaining_estudants' => $remainingStudents,
         ];
 
         return response()->json($data, Response::HTTP_OK);

@@ -6,14 +6,16 @@ use App\Mail\WelcomeEmail;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Validation\ValidationException;
-
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    public function register(Request $request)
+    public function store(Request $request)
     {
         try {
+
+            $data = $request->all();
+
             $request->validate([
                 'name' => 'required|max:255',
                 'email' => 'required|email|unique:users|max:255',
@@ -23,19 +25,12 @@ class UserController extends Controller
                 'plan_id' => 'required|exists:plans,id',
             ]);
 
-            $user = User::create([
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'date_birth' => $request->input('date_birth'),
-                'cpf' => $request->input('cpf'),
-                'password' => bcrypt($request->input('password')),
-                'plan_id' => $request->input('plan_id'),
-            ]);
+            $user = User::create($data);
 
             Mail::to($user->email, $user->name)->send(new WelcomeEmail($user));
             return $this->response('Usuário cadastrado com sucesso.', 201, $user);
-        } catch (ValidationException $e) {
-            return $this->error('Erro de validação.', 400, $e->errors());
+        }  catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
 }

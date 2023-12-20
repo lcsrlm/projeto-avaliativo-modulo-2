@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthControler::class, 'logout']);
-    Route::get('/dashboard', [DashboardController::class, 'index']);
-    Route::post('/exercises', [ExerciseController::class, 'store']);
+    Route::get('dashboard', [DashboardController::class, 'index']);
+
+    Route::get('exercises', [ExerciseController::class, 'index']);
+    Route::post('exercises', [ExerciseController::class, 'store']);
 });
 
 Route::post('users', [UserController::class, 'store']);

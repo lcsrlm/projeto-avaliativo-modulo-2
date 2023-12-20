@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
@@ -9,24 +10,32 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ExerciseController extends Controller
 {
+    public function index()
+    {
+        $user = Auth::user();
+        $exercises = $user->exercises()->orderBy('description')->get();
+
+        return response()->json($exercises, Response::HTTP_OK);
+    }
+
     public function store(Request $request)
     {
         try {
+
+            $user = Auth::user();
+            $data = $request->all();
+
             $request->validate([
                 'description' => 'required|string|max:255',
             ]);
-
-            $user = Auth::user();
 
             if ($user->exercises()->where('description', $request->input('description'))->exists()) {
                 return response()->json(['error' => 'Exercício já cadastrado para o mesmo usuário.'], Response::HTTP_CONFLICT);
             }
 
-            $exercise = $user->exercises()->create([
-                'description' => $request->input('description'),
-            ]);
+            $user->exercises()->create($data);
 
-            return response()->json($exercise, Response::HTTP_CREATED);
+            return response()->json($data, Response::HTTP_CREATED);
         } catch (QueryException $exception) {
             return response()->json(['error' => 'Erro no servidor ao processar a requisição.'], Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Exception $exception) {

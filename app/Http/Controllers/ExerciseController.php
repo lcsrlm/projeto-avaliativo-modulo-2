@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Exercise;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,6 +41,22 @@ class ExerciseController extends Controller
             return response()->json(['error' => 'Erro no servidor ao processar a requisição.'], Response::HTTP_INTERNAL_SERVER_ERROR);
         } catch (\Exception $exception) {
             return response()->json(['error' => 'Dados inválidos na requisição.'], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $user = Auth::user();
+            $exercise = $user->exercises()->find($id);
+            $exercise->delete();
+            return response()->json(null, Response::HTTP_NO_CONTENT);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => 'Exercício não encontrado.'], Response::HTTP_NOT_FOUND);
+        } catch (QueryException $exception) {
+            return response()->json(['error' => 'Erro no servidor ao processar a requisição.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => 'Erro ao processar a requisição.'], Response::HTTP_BAD_REQUEST);
         }
     }
 }

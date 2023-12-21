@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Exercise;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
@@ -11,9 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ExerciseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = Auth::user();
+        $user = $request->user();
         $exercises = $user->exercises()->orderBy('description')->get();
 
         return response()->json($exercises, Response::HTTP_OK);
@@ -23,7 +21,7 @@ class ExerciseController extends Controller
     {
         try {
 
-            $user = Auth::user();
+            $user = $request->user();
             $data = $request->all();
 
             $request->validate([
@@ -44,10 +42,10 @@ class ExerciseController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         try {
-            $user = Auth::user();
+            $user = $request->user();
             $exercise = $user->exercises()->find($id);
             $exercise->delete();
             return response()->json(null, Response::HTTP_NO_CONTENT);

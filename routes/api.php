@@ -15,8 +15,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('exercises', [ExerciseController::class, 'store']);
     Route::delete('exercises/{id}', [ExerciseController::class, 'destroy']);
 
-    Route::post('/students', [StudentController::class, 'store'])->middleware('check.student.limit');
-    Route::delete('/students/{id}', [StudentController::class, 'destroy']);
+    Route::post('students', [StudentController::class, 'store'])->middleware('check.student.limit');
+    Route::delete('students/{id}', [StudentController::class, 'destroy']);
+    Route::put('students/{id}', [StudentController::class, 'update']);
 });
 
 Route::post('users', [UserController::class, 'store']);

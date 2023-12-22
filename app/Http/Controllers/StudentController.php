@@ -54,4 +54,31 @@ class StudentController extends Controller
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'name' => 'nullable|string|max:255',
+                'email' => 'nullable|email|unique:students|max:255',
+                'date_birth' => 'nullable|date_format:Y-m-d',
+                'cpf' => 'nullable|string|unique:students',
+                'cep' => 'nullable|string|max:20',
+                'street' => 'nullable|string|max:30',
+                'state' => 'nullable|string|max:2',
+                'neighborhood' => 'nullable|string|max:50',
+                'city' => 'nullable|string|max:50',
+                'number' => 'nullable|string|max:30',
+                'contact' => 'nullable|string|max:20',
+            ]);
+
+            $user = $request->user();
+            $student = $user->students()->findOrFail($id);
+            $student->update($request->all());
+
+            return response()->json($student, Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => 'Erro no servidor ao processar a requisição.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

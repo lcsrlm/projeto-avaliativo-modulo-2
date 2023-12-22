@@ -15,7 +15,7 @@ class StudentController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:students|max:255',
                 'date_birth' => 'required|date_format:Y-m-d',
-                'cpf' => 'required|string|unique:students|regex:/^\d{3}\.\d{3}\.\d{3}-\d{2}$/|regex:/^\d{3}\d{3}\d{3}\d{2}$/',
+                'cpf' => 'required|string|unique:students',
                 'contact' => 'required|string|max:20',
                 'cep' => 'nullable|string|max:20',
                 'street' => 'nullable|string|max:30',
@@ -33,7 +33,8 @@ class StudentController extends Controller
 
             return response()->json($student, Response::HTTP_CREATED);
         } catch (\Exception $exception) {
-            return response()->json(['error' => 'Erro no servidor ao processar a requisição.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            dd($exception->getMessage(), $exception->getTrace());
+            return response()->json(['error' => $exception], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

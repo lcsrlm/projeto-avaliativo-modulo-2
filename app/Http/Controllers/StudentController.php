@@ -81,4 +81,22 @@ class StudentController extends Controller
             return response()->json(['error' => 'Erro no servidor ao processar a requisição.'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function index(Request $request)
+    {
+        $user = $request->user();
+
+        $searchTerm = $request->query('search');
+
+        $students = $user->students()
+            ->when($searchTerm, function ($query) use ($searchTerm) {
+                $query->where('name', 'like', "%$searchTerm%")
+                    ->orWhere('cpf', 'like', "%$searchTerm%")
+                    ->orWhere('email', 'like', "%$searchTerm%");
+            })
+            ->orderBy('name')
+            ->get();
+
+        return response()->json($students, 200);
+    }
 }

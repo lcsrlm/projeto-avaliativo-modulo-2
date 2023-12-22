@@ -13,16 +13,16 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        $registeredStudents = 0; //atualizar quando for criada a tabela de alunos
+        $registeredStudents = $user->students()->count();
         $registeredExercises = $user->exercises()->count();
         $currentUserPlan = $user->plan->description;
-        $remainingStudents = $user->plan->limit; //atualizar quando for criada a tabela de alunos
+        $remainingStudents =  $user->plan->limit - $registeredStudents;
 
         $data = [
             'registered_students' => $registeredStudents,
             'registered_exercises' => $registeredExercises,
             'current_user_plan' => $currentUserPlan,
-            'remaining_estudants' => $remainingStudents,
+            'remaining_studants' => $remainingStudents,
         ];
 
         return response()->json($data, Response::HTTP_OK);

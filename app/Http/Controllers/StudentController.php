@@ -37,4 +37,21 @@ class StudentController extends Controller
             return response()->json(['error' => $exception], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function destroy(Request $request, $id)
+    {
+        $user = $request->user();
+        $student = Student::find($id);
+
+        if (!$student) {
+            return response()->json(['error' => 'Estudante não encontrado.'], Response::HTTP_NOT_FOUND);
+        }
+
+        if ($student->user_id !== $user->id) {
+            return response()->json(['error' => 'Permissão negada.'], Response::HTTP_FORBIDDEN);
+        }
+        $student->delete();
+
+        return response()->json(null, Response::HTTP_NO_CONTENT);
+    }
 }

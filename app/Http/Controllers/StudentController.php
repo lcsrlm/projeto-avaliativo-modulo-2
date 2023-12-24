@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Models\Workout;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class StudentController extends Controller
@@ -102,7 +101,7 @@ class StudentController extends Controller
         return response()->json($students, 200);
     }
 
-    public function getStudentWorkouts(Request $request, $studentId)
+    public function getWorkouts(Request $request, $studentId)
     {
         $user = $request->user();
         $student = $user->students()->findOrFail($studentId);

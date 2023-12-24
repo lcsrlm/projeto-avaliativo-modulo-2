@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\Workout;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class StudentController extends Controller
@@ -98,5 +100,48 @@ class StudentController extends Controller
             ->get();
 
         return response()->json($students, 200);
+    }
+
+    public function getStudentWorkouts(Request $request, $studentId)
+    {
+        $user = $request->user();
+        $student = $user->students()->findOrFail($studentId);
+        $studentName = $student->name;
+
+        $workouts = Workout::where('student_id', $studentId)->get();
+
+        $response = [
+            'student_id' => $studentId,
+            'student_name' => $studentName,
+            'workouts' => [
+                'SEGUNDA' => [],
+                'TERCA' => [],
+                'QUARTA' => [],
+                'QUINTA' => [],
+                'SEXTA' => [],
+                'SABADO' => [],
+                'DOMINGO' => [],
+            ],
+        ];
+
+        foreach ($workouts as $workout) {
+            $day = strtoupper($workout->day);
+            $response['workouts'][$day][] = [
+                'id' => $workout->id,
+                'student_id' => $workout->student_id,
+                'exercise_id' => $workout->exercise_id,
+                'description' => $workout->exercise->description,
+                'repetitions' => $workout->repetitions,
+                'weight' => $workout->weight,
+                'break_time' => $workout->break_time,
+                'day' => $workout->day,
+                'observations' => $workout->observations,
+                'time' => $workout->time,
+                'created_at' => $workout->created_at->toDateTimeString(),
+                'updated_at' => $workout->updated_at->toDateTimeString(),
+            ];
+        }
+
+        return response()->json($response, 200);
     }
 }

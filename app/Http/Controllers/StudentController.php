@@ -33,7 +33,6 @@ class StudentController extends Controller
 
             return response()->json($student, Response::HTTP_CREATED);
         } catch (\Exception $exception) {
-            dd($exception->getMessage(), $exception->getTrace());
             return response()->json(['error' => $exception], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

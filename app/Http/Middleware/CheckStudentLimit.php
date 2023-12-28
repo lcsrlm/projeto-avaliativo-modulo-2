@@ -20,7 +20,7 @@ class CheckStudentLimit
         $planLimit = $user->plan->limit;
         $currentStudentCount = $user->students()->count();
 
-        if ($currentStudentCount > $planLimit) {
+        if ($currentStudentCount >= $planLimit) {
             return response()->json(['error' => 'Limite de cadastro de estudantes atingido.'], 403);
         }
 

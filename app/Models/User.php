@@ -33,6 +33,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Student::class);
     }
+
+    public function workouts()
+    {
+        return $this->hasMany(Workout::class);
+    }
     protected $fillable = [
         'name',
         'email',

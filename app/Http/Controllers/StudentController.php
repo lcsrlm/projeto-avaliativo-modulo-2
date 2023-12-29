@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\Workout;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -97,5 +98,28 @@ class StudentController extends Controller
             ->get();
 
         return response()->json($students, 200);
+    }
+
+    public function show(Request $request, $id)
+    {
+        $user = $request->user();
+        $student = $user->students()->findOrFail($id);
+
+        return response()->json([
+            'id' => $student->id,
+            'name' => $student->name,
+            'email' => $student->email,
+            'date_birth' => $student->date_birth,
+            'cpf' => $student->cpf,
+            'contact' => $student->contact,
+            'address' => [
+                'cep' => $student->cep,
+                'street' => $student->street,
+                'state' => $student->state,
+                'neighborhood' => $student->neighborhood,
+                'city' => $student->city,
+                'number' => $student->number,
+            ],
+        ], 200);
     }
 }

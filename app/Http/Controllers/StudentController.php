@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
-use App\Models\Workout;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -122,4 +121,5 @@ class StudentController extends Controller
             ],
         ], 200);
     }
+
 }

@@ -40,6 +40,15 @@
         th {
             background-color: #f2f2f2;
         }
+
+        h4 {
+            text-align: center;
+        }
+
+        footer > p {
+            text-align: center;
+            font-style: bold;
+        }
     </style>
 </head>
 <body>
@@ -90,6 +99,10 @@
             @endforeach
         </tbody>
     </table>
+    <footer>
+       <h4>Instrutor responsável</h4>
+        <p>{{ $userName }}</p>
+    </footer>
 </body>
 </html>
 

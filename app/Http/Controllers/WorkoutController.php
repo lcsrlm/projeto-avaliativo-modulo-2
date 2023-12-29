@@ -84,6 +84,7 @@ class WorkoutController extends Controller
     public function exportPDF(Request $request, $studentId)
     {
         $user = $request->user();
+        $userName = $request->user()->name;
         $student = $user->students()->findOrFail($studentId);
         $studentName = $student->name;
         $workouts = Workout::where('student_id', $studentId)->get();
@@ -119,7 +120,7 @@ class WorkoutController extends Controller
             ];
         }
 
-        $pdf = Pdf::loadView('pdf.student_workouts_pdf', ['student' => $student, 'workouts' => $workouts, 'response' => $response]);
+        $pdf = Pdf::loadView('pdf.student_workouts_pdf', ['student' => $student, 'workouts' => $workouts, 'response' => $response, 'userName' => $userName]);
 
         return $pdf->stream('student_report_with_workouts.pdf');
     }

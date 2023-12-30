@@ -18,7 +18,7 @@ class CreateStudentsTable extends Migration
             $table->date('date_birth');
             $table->string('cpf')->unique();
             $table->string('contact');
-            $table->foreignId('user_id')->constrained(); // Isso cria uma chave estrangeira para a tabela de usuários
+            $table->foreignId('user_id')->constrained();
             $table->string('city')->nullable();
             $table->string('neighborhood')->nullable();
             $table->string('number')->nullable();

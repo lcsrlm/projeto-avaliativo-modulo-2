@@ -4,7 +4,6 @@ use App\Http\Controllers\AuthControler;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\StudentReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkoutController;
 use Illuminate\Support\Facades\Route;

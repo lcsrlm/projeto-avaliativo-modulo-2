@@ -52,7 +52,7 @@
     </style>
 </head>
 <body>
-    <h1>Treinos do aluno {{ $student->name }}</h1>
+    <h1>Treinos do aluno (a) {{ $student->name }}</h1>
     <p>ID: {{ $student->id }}</p>
     <p>Nome: {{ $student->name }}</p>
     <p>Email: {{ $student->email }}</p>

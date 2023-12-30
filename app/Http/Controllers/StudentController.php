@@ -33,7 +33,7 @@ class StudentController extends Controller
 
             return response()->json($student, Response::HTTP_CREATED);
         } catch (\Exception $exception) {
-            return response()->json(['error' => $exception], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['error' => 'Dados já cadastrados'], Response::HTTP_BAD_REQUEST);
         }
     }
 

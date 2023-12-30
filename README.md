@@ -1,66 +1,424 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Academia API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Descrição
+Esta é uma aplicação API Rest construída com Laravel 10, utilizando PostgreSQL como banco de dados. A aplicação simula o sistema de uma academia.
 
-## About Laravel
+## Tecnologias Utilizadas
+- [Laravel](https://laravel.com/) - Framework PHP
+- [PostgreSQL](https://www.postgresql.org/) - Banco de Dados Relacional
+- [Mailtrap](https://mailtrap.io/) - Serviço de Teste de Email
+- [DomPDF](https://github.com/barryvdh/laravel-dompdf) - Geração de PDF
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Meios de Preparo para o Ambiente
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Antes de começar, certifique-se de ter o [Composer](https://getcomposer.org/) instalado em sua máquina.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Clonando o Projeto
+```bash
+git clone https://github.com/lcsrlm/projeto-avaliativo-modulo-2.git
+cd projeto-avaliativo-modulo-2
+```
 
-## Learning Laravel
+### Instalando as Dependências
+```bash
+composer install
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Configurando o Arquivo .env
+Crie uma cópia do arquivo .env.example e renomeie para .env. Abra o arquivo .env e configure as variáveis de ambiente, incluindo as informações do banco de dados.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=academia_api
+DB_USERNAME=admin
+DB_PASSWORD=admin
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Iniciando o Banco de Dados
+```bash
+php artisan migrate
+```
 
-## Laravel Sponsors
+### Iniciando o servidor 
+```bash
+php artisan serve
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Rotas
 
-### Premium Partners
+### Autenticação
+- **POST /login**: Realiza o login.
+  - **Exemplo de Requisição:**
+    ```json
+    {
+      "email": "lucasdarosa@email.com",
+      "password": "senha123@"
+    }
+    ```
+  - **Status 201 - Sucesso:**
+    ```json
+    {
+      "message": "Autorizado",
+      "token": "29|sxQtb4xTtMY9t2rC1zOBGtXNbAMQdLDKJruxkntm5385ae8a"
+    }
+    ```
+  - **Status 401 - Não autorizado:**
+    ```json
+    {
+      "message": "Não autorizado. Credenciais inválidas",
+      "status": 401,
+      "errors": [],
+      "data": []
+    }
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Usuários
+- **POST /users**: Cadastra um novo usuário.
+  - **Exemplo de Requisição:**
+    ```json
+    {
+      "name": "Lucas da Rosa",
+      "email": "lucasdarosa@email.com",
+      "date_birth": "1996-09-14",
+      "cpf": "542.806.738-31",
+      "password": "senha123@",
+      "plan_id": 1
+    }
+    ```
+  - **Status 201 - Sucesso:**
+    ```json
+    {
+      "message": "Usuário cadastrado com sucesso.",
+      "status": 201,
+      "data": {
+        "name": "Lucas da Rosa",
+        "email": "lucasdarosa@email.com",
+        "date_birth": "1996-09-14",
+        "cpf": "542.806.738-31",
+        "plan_id": 1,
+        "updated_at": "2023-12-30T16:43:46.000000Z",
+        "created_at": "2023-12-30T16:43:46.000000Z",
+        "id": 25,
+        "plan": {
+          "id": 1,
+          "description": "BRONZE",
+          "limit": 10,
+          "created_at": "2023-12-13T01:06:16.000000Z",
+          "updated_at": "2023-12-13T01:06:16.000000Z"
+        }
+      }
+    }
+    ```
+  - **Status 400 - Email já cadastrado:**
+    ```json
+    {
+      "message": "The email has already been taken.",
+      "status": 400,
+      "errors": [],
+      "data": []
+    }
+    ```
+  - **Status 400 - CPF já cadastrado:**
+    ```json
+    {
+      "message": "The cpf has already been taken.",
+      "status": 400,
+      "errors": [],
+      "data": []
+    }
+    ```
 
-## Contributing
+### Dashboard
+- **GET /dashboard**: Retorna dados do usuário logado.
+  - **Exemplo de Requisição:**
+    - Requer autenticação.
+  - **Status 200 - Sucesso:**
+    ```json
+    {
+      "registered_students": 10,
+      "registered_exercises": 10,
+      "current_user_plan": "BRONZE",
+      "remaining_studants": 0
+    }
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Exercícios
+- **GET /exercises**: Retorna todos os exercícios cadastrados.
+  - **Exemplo de Requisição:**
+    - Requer autenticação.
+  - **Status 200 - Sucesso:**
+    ```json
+    {
+      "id": 27,
+      "description": "Flexão de Braço",
+      "user_id": 24,
+      "created_at": "2023-12-28T22:22:26.000000Z",
+      "updated_at": "2023-12-28T22:22:26.000000Z"
+    }
+    ```
+- **POST /exercises**: Cadastra um novo exercício.
+  - **Exemplo de Requisição:**
+    ```json
+    {
+      "description": "Flexão de Braço"
+    }
+    ```
+  - **Status 201 - Created:**
+    ```json
+    {
+      "description": "Flexão de Braço"
+    }
+    ```
+  - **Status 409 - Conflito:**
+    ```json
+    {
+      "error": "Exercício já cadastrado para o mesmo usuário."
+    }
+    ```
+- **DELETE /exercises/{id}**: Deleta um exercício com base no ID.
+  - **Exemplo de Rota:**
+    `http://127.0.0.1:8000/api/exercises/21`
+  - **Status 204 - Sucesso**
 
-## Code of Conduct
+### Alunos
+- **GET /students**: Retorna todos os alunos cadastrados, com opção de filtros.
+  - **Exemplo de Requisição:**
+    - Requer autenticação.
+  - **Status 200 - Sucesso:**
+    ```json
+    {
+      "id": 20,
+      "name": "lais",
+      "email": "lais525@example.com",
+      "date_birth": "1995-01-15",
+      "cpf": "544.456.789-01",
+      "contact": "(31) 98765-4321",
+      "user_id": 24,
+      "city": "Belo Horizonte",
+      "neighborhood": "Bairro Alegre",
+      "number": "123",
+      "street": "Rua das Flores",
+      "state": "MG",
+      "cep": "18320-000",
+      "created_at": "2023-12-28T22:07:56.000000Z",
+      "updated_at": "2023-12-30T17:09:26.000000Z",
+      "deleted_at": null
+    }
+    ```
+- **GET /students/{id}**: Retorna informações de um aluno específico.
+  - **Exemplo de Rota:**
+    `http://127.0.0.1:8000/api/students/23`
+  - **Status 200 - Sucesso:**
+    ```json
+    {
+      "id": 20,
+      "name": "lais",
+      "email": "lais525@example.com",
+      "date_birth": "1995-01-15",
+      "cpf": "544.456.789-01",
+      "contact": "(31) 98765-4321",
+      "address": {
+        "cep": "18320-000",
+        "street": "Rua das Flores",
+        "state": "MG",
+        "neighborhood": "Bairro Alegre",
+        "city": "Belo Horizonte",
+        "number": "123"
+      }
+    }
+    ```
+- **POST /students**: Cadastra um novo aluno.
+  - **Exemplo de Requisição:**
+    ```json
+    {
+      "name": "Gabriela Lima",
+      "email": "gabilima@example.com",
+      "date_birth": "1995-01-15",
+      "cpf": "643.456.789-01",
+      "contact": "(31) 98765-4321",
+      "cep": "12345-678",
+      "street": "Rua das Flores",
+      "state": "MG",
+      "neighborhood": "Bairro Alegre",
+      "city": "Belo Horizonte",
+      "number": "123"
+    }
+    ```
+  - **Status 201 - Created**
+  - **Status 400 - Bad Request:**
+    ```json
+    {
+      "error": "Dados já cadastrados"
+    }
+    ```
+  - **Status 403 - Forbidden (Limite de cadastros):**
+    ```json
+    {
+      "error": "Limite de cadastro de estudantes atingido."
+    }
+    ```
+- **PUT /students/{id}**: Atualiza dados de um aluno.
+  - **Exemplo de Rota:**
+    `http://127.0.0.1:8000/api/students/20`
+  - **Exemplo de Requisição:**
+    ```json
+    {
+      "name": "lais",
+      "email": "lais525@example.com",
+      "date_birth": "1995-01-15",
+      "cpf": "544.456.789-01",
+      "contact": "(31) 98765-4321",
+      "cep": "18320-000",
+      "street": "Rua das Flores",
+      "state": "MG",
+      "neighborhood": "Bairro Alegre",
+      "city": "Belo Horizonte",
+      "number": "123"
+    }
+    ```
+  - **Status 200 - OK:**
+    ```json
+    {
+      "id": 20,
+      "name": "lais",
+      "email": "lais525@example.com",
+      "date_birth": "1995-01-15",
+      "cpf": "544.456.789-01",
+      "contact": "(31) 98765-4321",
+      "user_id": 24,
+      "city": "Belo Horizonte",
+      "neighborhood": "Bairro Alegre",
+      "number": "123",
+      "street": "Rua das Flores",
+      "state": "MG",
+      "cep": "18320-000",
+      "created_at": "2023-12-28T22:07:56.000000Z",
+      "updated_at": "2023-12-30T17:09:26.000000Z",
+      "deleted_at": null
+    }
+    ```
+  - **Status 500:**
+    ```json
+    {
+      "error": "Erro no servidor ao processar a requisição."
+    }
+    ```
+- **DELETE /students/{id}**: Deleta um aluno.
+  - **Exemplo de Rota:**
+    `http://127.0.0.1:8000/api/students/26`
+  - **Status 204 - No content**
+  - **Status 404 - Not found:**
+    ```json
+    {
+      "error": "Estudante não encontrado."
+    }
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Treinos
+- **POST /workouts**: Cadastra um novo treino para um aluno.
+  - **Exemplo de Requisição:**
+    ```json
+    {
+      "student_id": 20,
+      "exercise_id": 16,
+      "repetitions": 12,
+      "weight": 25.5,
+      "break_time": 60,
+      "day": "SÁBADO",
+      "observations": "Treino teste",
+      "time": 45
+    }
+    ```
+  - **Status 201 - Created:**
+    ```json
+    {
+      "student_id": 20,
+      "exercise_id": 16,
+      "repetitions": 12,
+      "weight": 25.5,
+      "break_time": 60,
+      "day": "SÁBADO",
+      "observations": "Treino teste",
+      "time": 45,
+      "updated_at": "2023-12-30T17:19:45.000000Z",
+      "created_at": "2023-12-30T17:19:45.000000Z",
+      "id": 13
+    }
+    ```
+  - **Status 409 - Conflict:**
+    ```json
+    {
+        "error": "Já existe um treino cadastrado para o mesmo aluno, exercício e dia"
+    }    
+    ```
+    - **GET /workouts/ (Para acessar essa rota o usuário precisa estar autenticado)**
+  - Exemplo de rota: http://127.0.0.1:8000/api/students/20/workouts
+  - Status 200 (Sucesso)
+    ```json
+    {
+      "student_id": "20",
+      "student_name": "lais",
+      "workouts": {
+        "SEGUNDA": [],
+        "TERÇA": [],
+        "QUARTA": [],
+        "QUINTA": [],
+        "SEXTA": [],
+        "SÁBADO": [
+          {
+            "id": 13,
+            "student_id": 20,
+            "exercise_id": 16,
+            "description": "Supino reto",
+            "repetitions": 12,
+            "weight": "25.50",
+            "break_time": 60,
+            "day": "SÁBADO",
+            "observations": "Treino teste",
+            "time": 45,
+            "created_at": "2023-12-30 17:19:45",
+            "updated_at": "2023-12-30 17:19:45"
+          }
+        ],
+        "DOMINGO": []
+      }
+    }
+    ```
 
-## Security Vulnerabilities
+### Relatórios
+- **GET /students/{id}/export (Para acessar essa rota o usuário precisa estar autenticado)**
+  - Exemplo de rota: http://127.0.0.1:8000/api/students/23/export
+  - Status 200 (Sucesso)
+  - Gera o arquivo PDF com os dados do aluno para download.
+  
+  ![Imagem de Exemplo](./images/print-pdf.jpg)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+### Logout
+- **POST /logout**: Realiza o logout, invalidando o token de autenticação.
+  - **Exemplo de Requisição:**
+    ```json
+    {
+      "token": "29|sxQtb4xTtMY9t2rC1zOBGtXNbAMQdLDKJruxkntm5385ae8a"
+    }
+    ```
+  - **Status 200 - Sucesso:**
+    ```json
+    {
+      "message": "Logout realizado com sucesso."
+    }
+    ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Contato
+- Para dúvidas ou problemas, entre em contato.
+- Conecte-se comigo:
+  - [GitHub](https://github.com/lcsrlm)
+  - [LinkedIn](https://www.linkedin.com/in/lucas-da-rosa-lima-82b244182?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
+
+
+### Considerações Finais
+- Esta API oferece funcionalidades essenciais para o gerenciamento de uma academia, incluindo autenticação, cadastro de usuários, exercícios, alunos, treinos e geração de relatórios em PDF.
+- Certifique-se de fornecer o token de autenticação válido nas rotas que exigem autenticação.
+- Obrigado por utilizar a Academia API!

@@ -388,8 +388,8 @@ php artisan serve
     ```
 
 ### Relatórios
-- **GET /students/{id}/export (Para acessar essa rota o usuário precisa estar autenticado)**
-  - Exemplo de rota: http://127.0.0.1:8000/api/students/23/export
+- **GET /students/export/{id} (Para acessar essa rota o usuário precisa estar autenticado)**
+  - Exemplo de rota: http://127.0.0.1:8000/api/students/export/23
   - Status 200 (Sucesso)
   - Gera o arquivo PDF com os dados do aluno para download.
   
